@@ -3,6 +3,7 @@ from time import sleep
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
+
 def create_directories(name: str) -> None:
     """
     Создает директории для хранения отзывов на основе указанного имени.
@@ -14,6 +15,7 @@ def create_directories(name: str) -> None:
         dir_name = f'{name}/{i}'
         if not os.path.isdir(dir_name):
             os.makedirs(dir_name, exist_ok=True)
+
 
 def get_review(driver, links: str) -> str:
     """
@@ -31,6 +33,7 @@ def get_review(driver, links: str) -> str:
     soup_review = BeautifulSoup(driver.page_source, "lxml")
     return soup_review.find("div", {"id": "lenta-card__text-review-full"}).text.strip()
 
+
 def save_review_to_file(review_number: int, review_title: str, review_links: str, review_rating: int, driver,
                         reviewer_name: str) -> None:
     """
@@ -47,6 +50,7 @@ def save_review_to_file(review_number: int, review_title: str, review_links: str
     file_name = f'{reviewer_name}/{review_rating}/{str(review_number).zfill(4)}.txt'
     with open(file_name, 'w', encoding="utf-8") as file:
         file.write(review_title.text.strip() + '\n' + get_review(driver, review_links))
+
 
 def download_reviews(count: int, name: str) -> None:
     """
@@ -81,6 +85,7 @@ def download_reviews(count: int, name: str) -> None:
 
     driver.close()
     driver.quit()
+
 
 if __name__ == '__main__':
     create_directories('data')
